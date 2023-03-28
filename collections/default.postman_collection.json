@@ -1,0 +1,47 @@
+{
+  "info": {
+    "_postman_id": "42b3d9f1-25e9-4487-bc62-fd0c2f870b67",
+    "name": "Postman Echo",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "13949202"
+  },
+  "item": [
+    {
+      "name": "Postman Echo",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://postman-echo.com/get?foo1=bar1&foo2=bar2",
+          "protocol": "https",
+          "host": ["postman-echo", "com"],
+          "path": ["get"],
+          "query": [
+            {
+              "key": "foo1",
+              "value": "bar1"
+            },
+            {
+              "key": "foo2",
+              "value": "bar2"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

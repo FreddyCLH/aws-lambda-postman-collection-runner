@@ -1,0 +1,36 @@
+{
+  "name": "aws-lambda-postman-collection-runner",
+  "version": "1.0.0",
+  "description": "Run Postman collections using Newman in a AWS Lambda function.",
+  "main": "index.js",
+  "scripts": {
+    "test": "POSTMAN_COLLECTION=sample.postman_collection.json node tests/test-mock-invoke.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FreddyCLH/aws-lambda-postman-collection-runner.git"
+  },
+  "keywords": [
+    "aws-lambda",
+    "postman",
+    "newman"
+  ],
+  "author": "Freddy Ho",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FreddyCLH/aws-lambda-postman-collection-runner/issues"
+  },
+  "homepage": "https://github.com/FreddyCLH/aws-lambda-postman-collection-runner#readme",
+  "dependencies": {
+    "newman": "^5.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.36.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "prettier": "2.8.7"
+  }
+}

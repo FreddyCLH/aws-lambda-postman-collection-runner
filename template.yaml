@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  aws-lambda-postman-collection-runner
+
+Transform:
+- AWS::Serverless-2016-10-31
+
+Parameters:
+  postmanCollection:
+    Type: String
+    Description: Postman collection file to run.
+    Default: default.postman_collection.json
+
+Resources:
+  # Each Lambda function is defined by properties:
+  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+
+  lambdaFunctionPostmanCollectionRunner:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/index.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 256
+      Timeout: 900
+      Description: Run Postman collections using Newman in a AWS Lambda function.
+      Policies:
+        - AWSLambdaBasicExecutionRole
+      Environment:
+        Variables:
+          POSTMAN_COLLECTION: !Ref postmanCollection
