@@ -30,3 +30,8 @@ Resources:
       Environment:
         Variables:
           POSTMAN_COLLECTION: !Ref postmanCollection
+
+Outputs:
+  lambdaFunctionName:
+    Description: Lambda Function name
+    Value: !Ref lambdaFunctionPostmanCollectionRunner
