@@ -7,7 +7,8 @@ An AWS Lambda function to run Postman collections using [Newman](https://github.
 - [General info](#general-info)
 - [Pre-requisites](#pre-requisites)
 - [Setup](#setup)
-- [Invoking the Lambda Postman collection runner and viewing the results](#invoking-the-lambda-postman-collection-runner-and-viewing-the-results)
+- [Invoking the Lambda Postman collection runner](#invoking-the-lambda-postman-collection-runner)
+- [Viewing Lambda Postman collection runner results](#viewing-lambda-postman-collection-runner-results)
 
 ## General info
 
@@ -60,7 +61,7 @@ Value               aws-lambda-postman-collec-lambdaFunctionPostmanCol-xxxxxxxxx
 -----------------------------------------------------------------------------------
 ```
 
-## Invoking the Lambda Postman collection runner and viewing the results
+## Invoking the Lambda Postman collection runner
 
 Obtain your deployed Lambda Function name from the sam deploy output `lambdaFunctionName`.
 Alternatively, you can retrieve the function name from the CloudFormation stack output using the following command:
@@ -90,7 +91,11 @@ aws lambda invoke --function-name ${FUNCTION_NAME} \
   --cli-binary-format raw-in-base64-out
 ```
 
-The Lambda invocation output containing the Postman collection run results is written to the file `invoke-response.json`.
+The Lambda invocation output is written to the file `invoke-response.json`.
+
+## Viewing Lambda Postman collection runner results
+
+The Postman collection run results is contained in the Lambda invocation output that is written to the file `invoke-response.json`.
 
 Example `invoke-response.json`:
 
@@ -119,4 +124,46 @@ The Postman collection run XML Junit output is base64 encoded in the `encoded` f
 
 ```bash
 jq -r '.encoded' invoke-response.json | base64 --decode
+```
+
+The Newman output containing the Postman collection run information is written to the Lambda's CloudWatch logs.
+The CloudWatch Log group path is **/aws/lambda/<LAMBDA_FUNCTION_NAME>**.
+
+Example Lambda CloudWatch logs:
+
+```
+INIT_START Runtime Version: nodejs:18.v5	Runtime Version ARN: arn:aws:lambda:ap-southeast-2::runtime:c869d752e4ae21a3945cfcb3c1ff2beb1f160d7bcec3b0a8ef7caceae73c055f
+START RequestId: 37f0f752-c2ae-4b30-9ac4-8ad0a03122f4 Version: $LATEST
+2023-04-03T00:10:34.603Z	37f0f752-c2ae-4b30-9ac4-8ad0a03122f4	INFO	Begining API Tests with Postman collection /var/task/collections/sample.postman_collection.json
+2023-04-03T00:10:34.603Z	37f0f752-c2ae-4b30-9ac4-8ad0a03122f4	INFO	Output path: /tmp/apitestsuites_xmlresults.xml
+newman
+sample
+→ Mock request
+GET https://postman-echo.com/get?foo1=bar1&foo2=bar2 
+[200 OK, 821B, 1420ms]
+✓  response is ok
+✓  response body has json with request queries
+→ Mock request using env vars
+GET https://postman-echo.com/get?foo1=foo&foo2=bar [200 OK, 929B, 226ms]
+✓  response is ok
+✓  response body has json with request queries
+┌─────────────────────────┬─────────────────────┬─────────────────────┐
+│                         │            executed │              failed │
+├─────────────────────────┼─────────────────────┼─────────────────────┤
+│              iterations │                   1 │                   0 │
+├─────────────────────────┼─────────────────────┼─────────────────────┤
+│                requests │                   2 │                   0 │
+├─────────────────────────┼─────────────────────┼─────────────────────┤
+│            test-scripts │                   4 │                   0 │
+├─────────────────────────┼─────────────────────┼─────────────────────┤
+│      prerequest-scripts │                   2 │                   0 │
+├─────────────────────────┼─────────────────────┼─────────────────────┤
+│              assertions │                   4 │                   0 │
+├─────────────────────────┴─────────────────────┴─────────────────────┤
+│ total run duration: 2.8s                                            │
+├─────────────────────────────────────────────────────────────────────┤
+│ total data received: 1.12kB (approx)                                │
+├─────────────────────────────────────────────────────────────────────┤
+│ average response time: 823ms [min: 226ms, max: 1420ms, s.d.: 597ms] │
+└─────────────────────────────────────────────────────────────────────┘
 ```
