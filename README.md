@@ -42,9 +42,23 @@ sam build
 sam deploy --guided
 ```
 
-When prompted for the Parameter `postmanCollection`, enter the name of Postman collection file that you want to run (that you had placed in the **collections** directory).
+When prompted for the Parameter `postmanCollection`, enter the name of Postman collection file that you want to run (that you had placed in the **collections** directory):
 
-Take note of the Lambda Function name in the output `lambdaFunctionName`.
+```
+Parameter postmanCollection [default.postman_collection.json]: sample.postman_collection.json
+```
+
+Take note of the Lambda Function name in the output `lambdaFunctionName`. Example output:
+
+```
+-----------------------------------------------------------------------------------
+Outputs                                                                                                                                                                                                                                                                                                              
+-----------------------------------------------------------------------------------
+Key                 lambdaFunctionName                                                                                                                                                                                                                                                                               
+Description         Lambda Function name                                                                                                                                                                                                                                                                             
+Value               aws-lambda-postman-collec-lambdaFunctionPostmanCol-xxxxxxxxxxxx                                                                                                                                                                                                                                  
+-----------------------------------------------------------------------------------
+```
 
 ## Invoking the Lambda Postman collection runner and viewing the results
 
@@ -104,5 +118,5 @@ Example `invoke-response.json`:
 The Postman collection run XML Junit output is base64 encoded in the `encoded` field. You can using the following command with [jq](https://stedolan.github.io/jq/download/) to decode it straight from the `invoke-response.json` file.
 
 ```bash
-cat invoke-response.json | jq -r '.encoded' | base64 --decode
+jq -r '.encoded' invoke-response.json | base64 --decode
 ```
